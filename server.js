@@ -17,6 +17,18 @@ router.get('/weact/weact.js', function (req, res) {
     res.sendFile(path.join(__dirname, 'weact/weact.js'))
 });
 
+router.get('/weact/props.js', function (req, res) {
+    res.sendFile(path.join(__dirname, 'weact/props.js'))
+});
+
+router.get('/weact/helpers.js', function (req, res) {
+    res.sendFile(path.join(__dirname, 'weact/helpers.js'))
+});
+
+router.get('/weact/messageError.js', function (req, res) {
+    res.sendFile(path.join(__dirname, 'weact/messageError.js'))
+});
+
 router.get('/weact/routing.js', function (req, res) {
     res.sendFile(path.join(__dirname, 'weact/routing.js'))
 });

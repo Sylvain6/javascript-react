@@ -1,42 +1,48 @@
-function myElement(element, props, children) {
-    if (isClass(element)) {
-        return handleClass(element, props);
-    }
-    else if (isStateLessComponent(element)) {
-        return element(props);
-    } else {
-        return handleHtmlElement(element, children);
-    }
-}
+import { type_check_v1, type_check_v2, isClass } from "./helpers.js";
+import { undefinedPropertyAccess } from "./messageError.js";
 
 export function createElement(element, props, ...children) {
-    return myElement(element, props, children);
-}
-
-function handleClass(classJs, props){
-    const component = new classJs(props);
-    return component.render();
-}
-
-function handleHtmlElement(element, children){
-    const myElement = document.createElement(element);
-    children.forEach(kid => {
-        if(typeof (kid) === "object") {
-            myElement.appendChild(kid);
+    if (isClass(element)) {
+        if(type_check_v2(props.value, props) === true){
+            const component = new element(props);
+            return component.render();
         } else {
-            myElement.innerHTML += kid;
+            throw new undefinedPropertyAccess(props, {type: "object", value: {}})
         }
-    });
-    return myElement;
+    }
+    else if (type_check_v1(element, "function") && !isClass(element)) {
+            return element(props);
+    } else {
+        const myElement = document.createElement(element);
+        children.forEach(kid => {
+            if(typeof (kid) === "object") {
+                myElement.appendChild(kid);
+            } else {
+                myElement.innerHTML += kid;
+            }
+        });
+        return myElement;
+    }
 }
 
-function isStateLessComponent(element){
-    return !isClass(element) && typeof element === 'function'
+function appendChild(element, child) {
+    if (child.type === 'REACT_CLASS') {
+        appendChild(element, child.render());
+    } else if (Array.isArray(child)) {
+        child.forEach(ch => appendChild(element, ch));
+    } else if (typeof(child) === 'object') {
+        element.appendChild(child);
+    } else {
+        element.innerHTML += child;
+    }
 }
 
-function isClass(functionJs) {
-    return typeof functionJs === 'function'
-        && /^class\s/.test(Function.prototype.toString.call(functionJs));
+function appendProp(element, propName, propVal) {
+    if (/^on.*$/.test(propName)) {
+        element.addEventListener(propName.substring(2).toLowerCase(), propVal);
+    } else {
+        element.setAttribute(propName, propVal);
+    }
 }
 
 export class Component {
@@ -44,17 +50,16 @@ export class Component {
         this.props = props;
     }
 
-    display(props) {
-        if(this.shouldUpdate(props) === true) {
-            render()
-        };
-    }
-
-    shouldUpdate(newProps){
-        return this.props !== newProps;
+    shouldUpdate(newProps) {
+        if(this.props !== newProps) {
+            while (elementDOM.hasChildNodes()) {
+                elementDOM.removeChild(elementDOM.lastChild);
+            }
+            DOM.render(DOM, elementDOM);
+        }
     }
 }
 
-export const render = (element, domEl) => {
-    domEl.appendChild(element);
+export const render = (elementDOM, DOM) => {
+    DOM.appendChild(elementDOM);
 };
