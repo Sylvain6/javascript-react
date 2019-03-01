@@ -1,5 +1,30 @@
-import { Component, render, createElement } from "./element/weact.js";
+import { Component, createElement } from "./weact.js";
 import { prop_access } from "./utils/props.js";
+
+const props = {
+    type: 'object',
+    gender: 'person',
+    value: {
+        firstname: 'Jonathan',
+        lastname: 'Rakotonirina',
+        navbar: {
+            title: 'Welcome To Weact'
+        },
+    },
+};
+
+export class App extends Component{
+    constructor(props){
+        super(props);
+    }
+
+    render(){
+        return createElement('div', null, `container`,
+            createElement(NavBar, props, `h1`, null),
+            createElement(Hello, props, `hello`, null)
+        )
+    }
+}
 
 class NavBar extends Component{
     constructor(props){
@@ -8,47 +33,19 @@ class NavBar extends Component{
     }
 
     render() {
-        return createElement('h1', null, this.string.interpolate(this.props));
+        return createElement('h1', null, `test`, this.string.interpolate(this.props));
     }
 }
 
 class Hello extends Component{
     constructor(props){
         super(props);
-        this.state = { count: 0 }
     }
-
-   /* onClick = () => {
-        const { count } = this.state;
-        this.setState({count : count + 1});
-    };*/
 
     render() {
-        const { count } = this.state;
-       return createElement('div', null,
-           createElement(NavBar, props, null),
-           createElement('div', null,
-               createElement('p', null, `${prop_access(this.props, "value.firstname")} ${prop_access(this.props, "value.lastname")}`),
-               /*createElement('button', {onClick: this.onClick}, 'Clicker'),
-               createElement('label', null, count),*/
-           )
-       )
+        return createElement('div', null, null,
+            createElement('p', null, `p`, `Hello ${prop_access(this.props, "value.firstname")} ${prop_access(this.props, "value.lastname")}`),
+        )
+
     }
 }
-
-//routing.add(Hello).add(Test).add(Test);
-const props = {
-    type: 'object',
-    gender: 'person',
-    value: {
-        firstname: 'Jonathan',
-        lastname: 'Rakotonirina',
-        greetings: 'Hello',
-        navbar: {
-            title: 'Welcome To Weact'
-        },
-    },
-};
-
-const app = createElement(Hello, props, null);
-render(app, document.getElementById('root'));
