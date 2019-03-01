@@ -1,3 +1,5 @@
+let rootDOMElement, vDom;
+
 function myElement(element, props, children) {
     if (isClass(element)) {
         return handleClass(element, props);
@@ -57,4 +59,20 @@ export class Component {
 
 export const render = (element, domEl) => {
     domEl.appendChild(element);
+};
+
+
+export const WeactDOM = {
+    render: (element, domElement, activeId) => {
+        vDom = element;
+        rootDOMElement = domElement;
+
+        const currentDOM = typeof (vDom) === 'object' ? vDom.render() : vDom;
+
+        domElement.appendChild(currentDOM);
+        if (activeId) {
+            currentDOM.querySelector(`#${activeId}`).focus()
+        }
+
+    }
 };

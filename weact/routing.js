@@ -1,38 +1,39 @@
-const Router = function() {
-    let routes = [];
-    let root = window.location.pathname.substr(0, window.location.pathname.lastIndexOf("/")).substr(1);
-    this.isExist = (component) => {
-        routes.forEach(r => {
-            return r.path === "/" + component.name;
-        });
+import {About} from './about.js';
+import {Home} from './home.js';
+import {Identity} from './app.js';
+import {WeactDOM} from './weact.js';
+
+const Router = function () {
+    let allRoutes = {};
+
+    this.addRoute = function (path, component) {
+        allRoutes[path] = component;
     };
-    this.add = (component) => {
-        if(typeof component !== "function") {
-            return false;
-        } else if(this.isExist(component) === true) {
-            console.log('already exist');
-            return false;
-        } else {
-            routes.push({path : "/" + component.name, component: component});
+
+    this.getAllroutes =  function () {
+        return allRoutes;
+    };
+
+
+    this.getRender = function (className, root) {
+        WeactDOM.render(new className(), root);
+
+    };
+
+    this.render = function (root) {
+
+        var path  = Object.keys(allRoutes).find(function(url) {
+            return  window.location.pathname === url;
+        });
+
+        if(path) {
+            this.getRender(allRoutes[path], root);
         }
-        return this;
     };
-    /*this.pushRoute : (path) => {
-        path = path ? path : '';
-        let paths = routes.map(p => p.path);
-        paths.forEach(way => {
-            console.log(way);
-            let fragment = way.toString();
-            let frag = fragment.substr(0, fragment.lastIndexOf("/")).substring(1);
-            if (frag === path) {
-                history.pushState({bar: 'foo'}, null, root + "/" + path);
-            }
-            else {
-                history.pushState(null, null, root + "/error404.html");
-            }
-        });
-        return this;
-    }*/
 };
 
-export const routing = new Router();
+export const router = new Router();
+
+router.addRoute('/', Identity);
+router.addRoute('/about', About);
+router.addRoute('/home', Home);
