@@ -4,6 +4,8 @@ const path = require('path');
 
 router.use('/static', express.static(__dirname + '/public'));
 router.use('/static', express.static(__dirname + '/weact'));
+router.use('/static', express.static(__dirname + '/weact/element'));
+router.use('/static', express.static(__dirname + '/weact/utils'));
 
 router.get('/index.html', function (req, res) {
     res.sendFile(path.join(__dirname, 'public/index.html'))
@@ -13,20 +15,20 @@ router.get('/weact/app.js', function (req, res) {
     res.sendFile(path.join(__dirname, 'weact/app.js'))
 });
 
-router.get('/weact/weact.js', function (req, res) {
-    res.sendFile(path.join(__dirname, 'weact/weact.js'))
+router.get('/weact/element/weact.js', function (req, res) {
+    res.sendFile(path.join(__dirname, 'weact/element/weact.js'))
 });
 
-router.get('/weact/props.js', function (req, res) {
-    res.sendFile(path.join(__dirname, 'weact/props.js'))
+router.get('/weact/utils/props.js', function (req, res) {
+    res.sendFile(path.join(__dirname, 'weact/utils/props.js'))
 });
 
-router.get('/weact/helpers.js', function (req, res) {
-    res.sendFile(path.join(__dirname, 'weact/helpers.js'))
+router.get('/weact/utils/helpers.js', function (req, res) {
+    res.sendFile(path.join(__dirname, 'weact/utils/helpers.js'))
 });
 
-router.get('/weact/messageError.js', function (req, res) {
-    res.sendFile(path.join(__dirname, 'weact/messageError.js'))
+router.get('/weact/utils/messageError.js', function (req, res) {
+    res.sendFile(path.join(__dirname, 'weact/utils/messageError.js'))
 });
 
 router.get('/weact/routing.js', function (req, res) {

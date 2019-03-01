@@ -4,7 +4,7 @@ export function undefinedPropertyError(path, property, object) {
         instance, Object.getPrototypeOf(this)
     );
     if (Error.captureStackTrace) {
-        Error.captureStackTrace(instance, UndefinedPropertyError);
+        Error.captureStackTrace(instance, undefinedPropertyError);
     }
     return instance;
 }
@@ -15,7 +15,7 @@ export function undefinedPropertyAccess(props, object) {
         instance, Object.getPrototypeOf(this)
     );
     if (Error.captureStackTrace) {
-        Error.captureStackTrace(instance, UndefinedPropertyError);
+        Error.captureStackTrace(instance, undefinedPropertyError);
     }
     return instance;
 }

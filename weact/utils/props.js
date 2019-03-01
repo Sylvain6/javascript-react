@@ -1,4 +1,4 @@
-import { undefinedPropertyError } from "./messageError.js";
+import { undefinedPropertyError } from "../utils/messageError.js";
 
 Object.prototype.prop_access = function(path) {
     if(!path) return this;
@@ -22,3 +22,5 @@ Object.prototype.prop_access = function(path) {
 export function prop_access(object, path) {
     return object.prop_access(path);
 }
+
+
